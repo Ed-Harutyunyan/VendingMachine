@@ -1,0 +1,24 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Coca Cola",
+            "price": 200
+        },
+        {
+            "id": 2,
+            "name": "Water",
+            "price": 250
+        },
+        {
+            "id": 3,
+            "name": "Snickers",
+            "price": 300
+        },
+        {
+            "id": 4,
+            "name": "Paper",
+            "price": 100
+        }
+    ]
+}
