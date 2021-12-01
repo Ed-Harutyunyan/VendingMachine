@@ -8,7 +8,17 @@ const options = reader.question("Please enter an option: ")
 //Later when figure out the way to print the names, will also add the prices 
 
  if (options == "list") {
-    for (let i = 0; i < data.products.length; i++) {
-        console.log(JSON.stringify(data['products'][i]['id']) + "\t" + JSON.stringify(data['products'][i]['name']) + "\t" + JSON.stringify(data['products'][i]['price'])) + "\n"
-    }
+        console.table(data.products)
+}
+
+let chosenProductByCustomer = reader.question("Please enter a products name: ")
+
+if (chosenProductByCustomer == "Coca Cola") {
+    console.log(`Here's your ${chosenProductByCustomer} 🧃`);
+} else if (chosenProductByCustomer == "Water") {
+    console.log(`Here's your ${chosenProductByCustomer} 💧`);
+} else if (chosenProductByCustomer == "Snickers") {
+    console.log(`Here's your ${chosenProductByCustomer} 🍫`);
+} else {
+    console.log(`Here's your ${chosenProductByCustomer}`);
 }
