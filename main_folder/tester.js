@@ -13,7 +13,25 @@ const options = reader.question("Please enter an option: ")
 //gives the product after asking what you want
 let chosenProductByCustomer = reader.question("Please enter a products name: ")
 
-function giveNeededProduct (val) {
+/*
+    switch(chosenProductByCustomer) {
+        case "Coca Cola":
+            console.log(`Here's your ${chosenProductByCustomer} 🧃`);
+            break;
+        case "Water":
+            console.log(`Here's your ${chosenProductByCustomer} 💧`);
+            break;
+        case "Snickers":
+            console.log(`Here's your ${chosenProductByCustomer} 🍫`);
+            break;
+        default:
+            console.log("No such product found, please enter something else");
+
+        
+    }
+*/
+
+function giveNeededProduct () {
 
     if (chosenProductByCustomer == "Coca Cola") {
         console.log(`Here's your ${chosenProductByCustomer} 🧃`);
@@ -26,4 +44,6 @@ function giveNeededProduct (val) {
     }
 }
 
-setTimeout(giveNeededProduct(chosenProductByCustomer), 1000)
+setTimeout(giveNeededProduct, 1000, chosenProductByCustomer)
+
+
