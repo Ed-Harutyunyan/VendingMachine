@@ -1,8 +1,10 @@
 const reader = require('readline-sync');
 const data = require('./products.json');
 const fs = require('fs');
+const jsr = require('./script')
+let crud = JSONReader('./products.json')
 
-console.log("Please enter an option: ");
+console.log("Please enter an option");
 const options = reader.question("list, exit: \n")
 
 // So if you want to see the list of products this vending machine has, you write "list" and you get the names of products available.
@@ -31,6 +33,5 @@ function giveNeededProduct () {
 
     }
 }
-
 
 setTimeout(giveNeededProduct, 1000, chosenProductByCustomer)
