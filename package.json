@@ -4,6 +4,7 @@
   "description": "",
   "main": "tester.js",
   "dependencies": {
+    "edit-json-file": "^1.6.2",
     "readline-sync": "^1.4.10"
   },
   "devDependencies": {},
