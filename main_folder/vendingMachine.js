@@ -25,12 +25,15 @@ if (options === "list") {
 //gives the product after asking what you want
 let id = reader.questionInt("Please enter a products ID: ")
 
+
+
+
     function productGetter() {
         jsr.decreaseQuantity(id)
         jsr.getProduct(id)
         return;
     } 
-    
+
     
     setTimeout(productGetter, 1000)
 
