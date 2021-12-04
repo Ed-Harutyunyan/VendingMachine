@@ -25,15 +25,27 @@ if (options === "list") {
 //gives the product after asking what you want
 let id = reader.questionInt("Please enter a products ID: ")
 
+console.log(`Your chosen product costs ${jsr.getPrice(id)}`)
+let userCoin = reader.questionInt(`Please insert right amount of coins: `)
+
+    jsr.buyProduct(id, userCoin)
+
+// while (userCoin !== jsr.getPrice(id)) {
+//     jsr.buyProduct(id, userCoin)
+// }
 
 
-
-    function productGetter() {
+function productGetter() {
+    if (!jsr.validateQuantity(id - 1)) {
         jsr.decreaseQuantity(id)
-        jsr.getProduct(id)
         return;
-    } 
+    }
+    console.log("foo");
+    jsr.decreaseQuantity(id)
+    jsr.getProduct(id)
+    return;
+}
 
-    
+
     setTimeout(productGetter, 1000)
 
