@@ -6,6 +6,12 @@ module.exports = class VendingMachineWorker {
     constructor(dataURL) {
         this.url = dataURL;
         this.data = require(dataURL);
+        this.machineMoney = [
+            50, 50, 50, 50, 50,
+            100, 100, 100, 100, 100,
+            200, 200, 200, 200, 200,
+            500, 500, 500, 500, 500
+        ]
     }
 
     // response or callback (cb)
@@ -85,6 +91,37 @@ module.exports = class VendingMachineWorker {
         })
     }
 
+    buyProduct(productId, userMoney) {
+
+        // invalid payment case
+        if (userMoney < this.data.products[productId].price) {
+            console.log('Invalid payment. Try again!')
+            
+        }
+
+        // need to pay change and product
+        if (userMoney > this.data.products[productId].price) {
+
+            let difference = userMoney - this.data.products[productId].price
+            let change = 0
+
+            for (let coin in this.machineMoney) {
+                if (coin <= difference && difference > 0) {
+                    difference -= coin
+                    change += coin
+                }
+
+                if (difference == 0)
+                    return change
+            }
+        }
+
+        // does not need to pay change
+        if (userMoney === this.data.products[productId].price) {
+            return;
+        }
+    }
+
     getProduct(productId) {
 
         if (productId == 1) {
@@ -158,6 +195,8 @@ module.exports = class VendingMachineWorker {
         })
 
     }
+
+
 
     validateQuantity(productId) {
         if (this.getQuantity(productId) == 0)
