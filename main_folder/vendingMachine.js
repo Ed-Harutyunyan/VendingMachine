@@ -31,5 +31,6 @@ let id = reader.questionInt("Please enter a products ID: ")
         return;
     } 
     
+    
     setTimeout(productGetter, 1000)
 
