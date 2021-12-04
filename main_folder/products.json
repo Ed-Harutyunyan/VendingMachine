@@ -1,1 +1,28 @@
-{"products":[{"id":1,"name":"Coca Cola","price":200,"quantity":5},{"id":2,"name":"Water","price":250,"quantity":5},{"id":3,"name":"Snickers","price":300,"quantity":5},{"id":4,"name":"Paper","price":100,"quantity":5}]}
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Coca Cola",
+            "price": 200,
+            "quantity": 5
+        },
+        {
+            "id": 2,
+            "name": "Water",
+            "price": 250,
+            "quantity": 5
+        },
+        {
+            "id": 3,
+            "name": "Snickers",
+            "price": 300,
+            "quantity": 5
+        },
+        {
+            "id": 4,
+            "name": "Paper",
+            "price": 100,
+            "quantity": 5
+        }
+    ]
+}
