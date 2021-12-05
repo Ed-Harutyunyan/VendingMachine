@@ -14,7 +14,6 @@ module.exports = class VendingMachineWorker {
         ]
     }
 
-    // response or callback (cb)
     jsonReader(filePath, response) {
         fs.readFile(filePath, (err, fileData) => {
 
@@ -30,32 +29,16 @@ module.exports = class VendingMachineWorker {
         })
     }
 
-    get getDataProduct() {
-        return this.data.products
-    }
-
-    getProduct(productId) {
+    productDispenser(productId) {
         return this.data.products[productId]
-    }
-
-    setProduct(productId, product) {
-        this.data.products[productId] = product
     }
 
     getName(productId) {
         return this.data.products[productId].name
     }
 
-    setName(productId, name) {
-        this.data.products[productId].name = name
-    }
-
     getPrice(productId) {
-        return this.data.products[productId].price
-    }
-
-    setPrice(productId, price) {
-        return this.data.products[productId].price = price
+        return this.data.products[productId - 1].price
     }
 
     getQuantity(productId) {
@@ -72,7 +55,7 @@ module.exports = class VendingMachineWorker {
 
     decreaseQuantity(productId) {
 
-        if (!this.validateQuantity(productId - 1)) {
+        if (!this.checkQuantity(productId - 1)) {
             console.log('The following product does not exist. Try something else')
             return
         }
@@ -92,11 +75,14 @@ module.exports = class VendingMachineWorker {
     }
 
     buyProduct(productId, userMoney) {
-
+        let userInput = 0
         // invalid payment case
         if (userMoney < this.data.products[productId].price) {
-            console.log('Invalid payment. Try again!')
-            
+            while(userMoney < this.data.products[productId].price) {
+            console.log(`Not the right amount please insert ${this.data.products[productId].price - userMoney} more`) 
+            userInput + userMoney
+            return;
+            }
         }
 
         // need to pay change and product
@@ -122,14 +108,14 @@ module.exports = class VendingMachineWorker {
         }
     }
 
-    getProduct(productId) {
+    productDispenser(productId) {
 
         if (productId == 1) {
-            console.log(`Here's your Coca Cola 🧃`);
+            console.log(`Here's your ${this.getName(productId - 1)} 🧃`);
         } else if (productId == 2) {
-            console.log(`Here's your Water 💧`);
+            console.log(`Here's your ${this.getName(productId - 1)} 💧`);
         } else if (productId == 3) {
-            console.log(`Here's your Snickers Bar 🍫`);
+            console.log(`Here's your ${this.getName(productId - 1)} Bar 🍫`);
         } else {
             console.log(`Sorry Magical Vending Machine doesn't have a product under that ID please enter another ID`);
         }
@@ -151,75 +137,31 @@ module.exports = class VendingMachineWorker {
         })
     }
 
-    insertProduct(product) {
-
-        if (!this.validateProduct(product)) {
-            console.log('Invalid entered product. Try again.')
-            return
-        }
-
-        this.data.products[product.id] = product
-
-        this.jsonReader(this.url, (err, item) => {
-
-            if (err) {
-                console.log('Some error appers: ', err)
-                return
-            }
-
-            item.products[product.id] = product
-            fs.writeFileSync(this.url, JSON.stringify(item));
-        })
-
-    }
-
-    // inserts null in place of removed object
-    deleteProduct(productID) {
-
-        if (!this.validateID(productID)) {
-            console.log("Product with the mentioned ID does not exist!")
-            return
-        }
-
-        delete this.data.products[productID]
-
-        this.jsonReader(this.url, (err, item) => {
-
-            if (err) {
-                console.log('Some error appers: ', err)
-                return
-            }
-
-            delete item.products[productID]
-            fs.writeFileSync(this.url, JSON.stringify(item));
-        })
-
-    }
-
-
-
-    validateQuantity(productId) {
+    checkQuantity(productId) {
         if (this.getQuantity(productId) == 0)
-            return false
-        return true
+            return false;
+
+        return true;
     }
 
-    validateProduct(newProduct) {
+    // validateProduct(newProduct) {
 
-        if (Object.keys(newProduct).length != 4 || typeof newProduct.id != 'number'
-            || typeof newProduct.price != 'number' || typeof newProduct.quantity != 'number')
-            return false
+    //     if (Object.keys(newProduct).length != 4 || typeof newProduct.id != 'number'
+    //         || typeof newProduct.price != 'number' || typeof newProduct.quantity != 'number')
+    //         return false;
 
-        for (let product of this.data.products)
-            if (product.id == newProduct.id)
-                return false
-        return true
-    }
+    //     for (let product of this.data.products)
+    //         if (product.id == newProduct.id)
+    //             return false;
 
-    validateID(productID) {
-        for (let product of this.data.products)
-            if (product.id == productID)
-                return true
-        return false
-    }
+    //     return true;
+    // }
+
+    // validateID(productId) {
+    //     for (let product of this.data.products)
+    //         if (product.id == productId)
+    //             return true;
+
+    //     return false;
+    // }
 }
