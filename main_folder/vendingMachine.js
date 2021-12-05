@@ -30,19 +30,14 @@ let userCoin = reader.questionInt(`Please insert right amount of coins: `)
 
     jsr.buyProduct(id, userCoin)
 
-// while (userCoin !== jsr.getPrice(id)) {
-//     jsr.buyProduct(id, userCoin)
-// }
-
 
 function productGetter() {
-    if (!jsr.validateQuantity(id - 1)) {
+    if (!jsr.checkQuantity(id - 1)) {
         jsr.decreaseQuantity(id)
         return;
     }
-    console.log("foo");
     jsr.decreaseQuantity(id)
-    jsr.getProduct(id)
+    jsr.productDispenser(id)
     return;
 }
 
