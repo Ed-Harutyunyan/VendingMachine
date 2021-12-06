@@ -25,11 +25,17 @@ if (options === "list") {
 //gives the product after asking what you want
 let id = reader.questionInt("Please enter a products ID: ")
 
+//If it is not available -->
+if (!jsr.checkQuantity(id - 1)) {
+    console.log(`This product is not available`);
+    return
+}
+
+//If available -->
 console.log(`Your chosen product costs ${jsr.getPrice(id)}`)
 let userCoin = reader.questionInt(`Please insert right amount of coins: `)
 
-    jsr.buyProduct(id, userCoin)
-
+jsr.buyProduct(id, userCoin)
 
 function productGetter() {
     if (!jsr.checkQuantity(id - 1)) {
@@ -42,5 +48,5 @@ function productGetter() {
 }
 
 
-    setTimeout(productGetter, 1000)
+setTimeout(productGetter, 1000)
 
