@@ -1,4 +1,5 @@
 const fs = require('fs');
+const reader = require('readline-sync')
 
 
 module.exports = class VendingMachineWorker {
@@ -7,10 +8,10 @@ module.exports = class VendingMachineWorker {
         this.url = dataURL;
         this.data = require(dataURL);
         this.machineMoney = [
-            50, 50, 50, 50, 50,
-            100, 100, 100, 100, 100,
-            200, 200, 200, 200, 200,
-            500, 500, 500, 500, 500
+            [50, 50, 50, 50, 50],
+            [100, 100, 100, 100, 100],
+            [200, 200, 200, 200, 200],
+            [500, 500, 500, 500, 500]
         ]
     }
 
@@ -65,7 +66,7 @@ module.exports = class VendingMachineWorker {
         this.jsonReader(this.url, (err, item) => {
 
             if (err) {
-                console.log('Some error appers: ', err)
+                console.log('Some error: ', err)
                 return
             }
 
@@ -75,46 +76,46 @@ module.exports = class VendingMachineWorker {
     }
 
     buyProduct(productId, userMoney) {
-        let userInput = 0
         // invalid payment case
-        if (userMoney < this.data.products[productId].price) {
-            while(userMoney < this.data.products[productId].price) {
-            console.log(`Not the right amount please insert ${this.data.products[productId].price - userMoney} more`) 
-            userInput + userMoney
+        if (userMoney < this.data.products[productId - 1].price) {
+            const leftoverCoins = reader.questionInt(`Not the right amount please insert ${this.data.products[productId - 1].price - userMoney} more: `)
+            this.buyProduct(productId, userMoney + leftoverCoins)
             return;
-            }
         }
 
         // need to pay change and product
-        if (userMoney > this.data.products[productId].price) {
+        if (userMoney > this.data.products[productId - 1].price) {
 
-            let difference = userMoney - this.data.products[productId].price
-            let change = 0
+            // let difference = userMoney - this.data.products[productId - 1].price
+            // let change = 0
 
-            for (let coin in this.machineMoney) {
-                if (coin <= difference && difference > 0) {
-                    difference -= coin
-                    change += coin
-                }
+            let change = userMoney - this.data.products[productId - 1].price
 
-                if (difference == 0)
-                    return change
-            }
+            // for (let i = 0; i < this.machineMoney.length; i++) {
+            //     while (difference < this.machineMoney[i]) {
+            //         change =+ coin
+            //         console.log("dbeug");
+            //     }
+            //     console.log("dbeug");
+            // }
+
+            console.log(`Your change: \n${change}`);
+            return;
         }
 
         // does not need to pay change
-        if (userMoney === this.data.products[productId].price) {
+        if (userMoney === this.data.products[productId - 1].price) {
             return;
         }
     }
 
     productDispenser(productId) {
 
-        if (productId == 1) {
+        if (productId === 1) {
             console.log(`Here's your ${this.getName(productId - 1)} 🧃`);
-        } else if (productId == 2) {
+        } else if (productId === 2) {
             console.log(`Here's your ${this.getName(productId - 1)} 💧`);
-        } else if (productId == 3) {
+        } else if (productId === 3) {
             console.log(`Here's your ${this.getName(productId - 1)} Bar 🍫`);
         } else {
             console.log(`Sorry Magical Vending Machine doesn't have a product under that ID please enter another ID`);
@@ -138,7 +139,7 @@ module.exports = class VendingMachineWorker {
     }
 
     checkQuantity(productId) {
-        if (this.getQuantity(productId) == 0)
+        if (this.getQuantity(productId) === 0)
             return false;
 
         return true;
