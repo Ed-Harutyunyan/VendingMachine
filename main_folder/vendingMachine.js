@@ -1,7 +1,7 @@
 const reader = require('readline-sync');
 //const data = require('./products.json');
-const VendingMachineWorker = require('./script.js')
-let jsr = new VendingMachineWorker('./products.json')
+const VendingMachineFunctions = require('./script.js')
+let jsr = new VendingMachineFunctions('./products.json')
 
 
 console.log("Please enter an option (-increase- for staff only)");
@@ -25,7 +25,13 @@ if (options === "list") {
 //gives the product after asking what you want
 let id = reader.questionInt("Please enter a products ID: ")
 
-//If it is not available -->
+//validate the ID
+if (!jsr.validateID(id)) {
+    console.log(`Product under ID ${id} is not available `);
+    return 
+}
+
+//If it the product is not available at that moment-->
 if (!jsr.checkQuantity(id - 1)) {
     console.log(`This product is not available`);
     return

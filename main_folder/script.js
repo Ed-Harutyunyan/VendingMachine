@@ -2,25 +2,20 @@ const fs = require('fs');
 const reader = require('readline-sync')
 
 
-module.exports = class VendingMachineWorker {
+module.exports = class VendingMachineFunctions {
 
-    constructor(dataURL) {
-        this.url = dataURL;
-        this.data = require(dataURL);
-        this.machineMoney = [
-            [50, 50, 50, 50, 50],
-            [100, 100, 100, 100, 100],
-            [200, 200, 200, 200, 200],
-            [500, 500, 500, 500, 500]
-        ]
+    constructor(dataLoc) {
+        this.loc = dataLoc;
+        this.data = require(dataLoc);
     }
 
     jsonReader(filePath, response) {
         fs.readFile(filePath, (err, fileData) => {
 
+            //if syntax error
             if (err)
                 return response && response(err)
-
+            //if runtime error
             try {
                 const object = JSON.parse(fileData)
                 return response && response(null, object)
@@ -63,15 +58,17 @@ module.exports = class VendingMachineWorker {
 
         this.setQuantity(productId - 1, this.getQuantity(productId - 1) - 1)
 
-        this.jsonReader(this.url, (err, item) => {
-
+        //updates JSON/decrase item quantity in JSON
+        this.jsonReader(this.loc, (err, item) => {
+            
+            //if runtime error
             if (err) {
                 console.log('Some error: ', err)
                 return
             }
 
             item.products[productId - 1].quantity -= 1
-            fs.writeFileSync(this.url, JSON.stringify(item));
+            fs.writeFileSync(this.loc, JSON.stringify(item));
         })
     }
 
@@ -86,18 +83,7 @@ module.exports = class VendingMachineWorker {
         // need to pay change and product
         if (userMoney > this.data.products[productId - 1].price) {
 
-            // let difference = userMoney - this.data.products[productId - 1].price
-            // let change = 0
-
             let change = userMoney - this.data.products[productId - 1].price
-
-            // for (let i = 0; i < this.machineMoney.length; i++) {
-            //     while (difference < this.machineMoney[i]) {
-            //         change =+ coin
-            //         console.log("dbeug");
-            //     }
-            //     console.log("dbeug");
-            // }
 
             console.log(`Your change: \n${change}`);
             return;
@@ -126,15 +112,15 @@ module.exports = class VendingMachineWorker {
 
         this.setQuantity(productId - 1, this.getQuantity(productId - 1) + num)
 
-        this.jsonReader(this.url, (err, item) => {
+        this.jsonReader(this.loc, (err, item) => {
 
             if (err) {
-                console.log('Some error appers: ', err)
+                console.log('Some error appears: ', err)
                 return
             }
 
             item.products[productId - 1].quantity += num
-            fs.writeFileSync(this.url, JSON.stringify(item));
+            fs.writeFileSync(this.loc, JSON.stringify(item));
         })
     }
 
@@ -158,11 +144,11 @@ module.exports = class VendingMachineWorker {
     //     return true;
     // }
 
-    // validateID(productId) {
-    //     for (let product of this.data.products)
-    //         if (product.id == productId)
-    //             return true;
+    validateID(productId) {
+        for (let product of this.data.products)
+            if (product.id == productId)
+                return true;
 
-    //     return false;
-    // }
+        return false;
+    }
 }
