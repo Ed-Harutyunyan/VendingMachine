@@ -49,6 +49,10 @@ module.exports = class VendingMachineFunctions {
         console.table(this.data.products)
     }
 
+    printCoins() {
+        console.table(this.data.money)
+    }
+
     decreaseQuantity(productId) {
 
         if (!this.checkQuantity(productId - 1)) {
@@ -85,7 +89,9 @@ module.exports = class VendingMachineFunctions {
 
             let change = userMoney - this.data.products[productId - 1].price
 
-            console.log(`Your change: \n${change}`);
+            this.getChange(change)
+
+            //console.log(`Your change: \n${change}`);
             return;
         }
 
@@ -130,19 +136,39 @@ module.exports = class VendingMachineFunctions {
 
         return true;
     }
+    
+    getChange(amountOfChange) {
+        let denoms = [50, 100, 200, 300]
+        let result = []
 
-    // validateProduct(newProduct) {
+        while (amountOfChange > 0) {
+            let coins = denoms.pop()
+            let count = Math.floor(amountOfChange/coins)
+            amountOfChange -= count * coins
+            if (count) {
+                result.push(coins)
+            }
+        }
+        
+        console.log(`Here's your change: \n${result}`)
+    }
 
-    //     if (Object.keys(newProduct).length != 4 || typeof newProduct.id != 'number'
-    //         || typeof newProduct.price != 'number' || typeof newProduct.quantity != 'number')
-    //         return false;
+    userCoinAdd (userCoin) {
 
-    //     for (let product of this.data.products)
-    //         if (product.id == newProduct.id)
-    //             return false;
+        if (userCoin === 150 || 250 || 300 || 350 || 450) {
+            console.log(`Please insert valid coins`);
+        }
 
-    //     return true;
-    // }
+        if (userCoin === 50) {
+            this.data.products.money[0].quantity += 1
+        } else if (userCoin === 100) {
+            this.data.products.money[1].quantity += 1
+        } else if (userCoin === 200) {
+            this.data.products.money[2].quantity += 1
+        } else if (userCoin === 500) {
+            this.data.products.money[3].quantity += 1
+        }
+    }
 
     validateID(productId) {
         for (let product of this.data.products)
