@@ -38,8 +38,13 @@ if (!jsr.checkQuantity(id - 1)) {
 }
 
 //If available -->
+console.log(`Please insert coins that are acceptable:`)
+jsr.printCoins()
 console.log(`Your chosen product costs ${jsr.getPrice(id)}`)
 let userCoin = reader.questionInt(`Please insert right amount of coins: `)
+
+// let oddCoins = userCoin / 50
+// if (oddCoins === )
 
 jsr.buyProduct(id, userCoin)
 
