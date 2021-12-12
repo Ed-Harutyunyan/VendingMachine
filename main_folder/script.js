@@ -78,6 +78,7 @@ module.exports = class VendingMachineFunctions {
 
     buyProduct(productId, userMoney) {
         // invalid payment case
+
         if (userMoney < this.data.products[productId - 1].price) {
             const leftoverCoins = reader.questionInt(`Not the right amount please insert ${this.data.products[productId - 1].price - userMoney} more: `)
             this.buyProduct(productId, userMoney + leftoverCoins)
@@ -86,12 +87,8 @@ module.exports = class VendingMachineFunctions {
 
         // need to pay change and product
         if (userMoney > this.data.products[productId - 1].price) {
-
             let change = userMoney - this.data.products[productId - 1].price
-
             this.getChange(change)
-
-            //console.log(`Your change: \n${change}`);
             return;
         }
 
@@ -118,6 +115,8 @@ module.exports = class VendingMachineFunctions {
 
         this.setQuantity(productId - 1, this.getQuantity(productId - 1) + num)
 
+        console.log(`Products' quantity increased successfully`);
+
         this.jsonReader(this.loc, (err, item) => {
 
             if (err) {
@@ -138,11 +137,11 @@ module.exports = class VendingMachineFunctions {
     }
     
     getChange(amountOfChange) {
-        let denoms = [50, 100, 200, 300]
+        let changes = [50, 100, 200, 300]
         let result = []
 
         while (amountOfChange > 0) {
-            let coins = denoms.pop()
+            let coins = changes.pop()
             let count = Math.floor(amountOfChange/coins)
             amountOfChange -= count * coins
             if (count) {
@@ -153,22 +152,18 @@ module.exports = class VendingMachineFunctions {
         console.log(`Here's your change: \n${result}`)
     }
 
-    userCoinAdd (userCoin) {
+    // userCoinAdd (userCoin) {
 
-        if (userCoin === 150 || 250 || 300 || 350 || 450) {
-            console.log(`Please insert valid coins`);
-        }
-
-        if (userCoin === 50) {
-            this.data.products.money[0].quantity += 1
-        } else if (userCoin === 100) {
-            this.data.products.money[1].quantity += 1
-        } else if (userCoin === 200) {
-            this.data.products.money[2].quantity += 1
-        } else if (userCoin === 500) {
-            this.data.products.money[3].quantity += 1
-        }
-    }
+    //     if (userCoin === 50) {
+    //         this.data.money[0].quantity =+ 1
+    //     } else if (userCoin === 100) {
+    //         this.data.money[1].quantity += 1
+    //     } else if (userCoin === 200) {
+    //         this.data.money[2].quantity += 1
+    //     } else if (userCoin === 500) {
+    //         this.data.money[3].quantity += 1
+    //     }
+    // }
 
     validateID(productId) {
         for (let product of this.data.products)

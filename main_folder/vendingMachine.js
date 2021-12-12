@@ -33,7 +33,7 @@ if (!jsr.validateID(id)) {
 
 //If it the product is not available at that moment-->
 if (!jsr.checkQuantity(id - 1)) {
-    console.log(`This product is not available`);
+    console.log(`This product is not available at this moment`);
     return
 }
 
@@ -43,21 +43,15 @@ jsr.printCoins()
 console.log(`Your chosen product costs ${jsr.getPrice(id)}`)
 let userCoin = reader.questionInt(`Please insert right amount of coins: `)
 
-// let oddCoins = userCoin / 50
-// if (oddCoins === )
-
 jsr.buyProduct(id, userCoin)
 
 function productGetter() {
-    if (!jsr.checkQuantity(id - 1)) {
-        jsr.decreaseQuantity(id)
-        return;
-    }
     jsr.decreaseQuantity(id)
     jsr.productDispenser(id)
     return;
 }
 
 
-setTimeout(productGetter, 1000)
+setTimeout(productGetter, 5000)
+
 
