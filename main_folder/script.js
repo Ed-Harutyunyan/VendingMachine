@@ -25,9 +25,9 @@ module.exports = class VendingMachineFunctions {
         })
     }
 
-    productDispenser(productId) {
-        return this.data.products[productId]
-    }
+    // productDispenser(productId) {
+    //     return this.data.products[productId]
+    // }
 
     getName(productId) {
         return this.data.products[productId].name
